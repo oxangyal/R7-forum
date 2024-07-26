@@ -4,34 +4,35 @@ class PostsController < ApplicationController
   before_action :set_post, only: %w[show edit update destroy]
   before_action :check_access, only: %w[edit update delete] 
 
-def create
-  @post = @forum.posts.new(post_params) 
-  @post.save
-  redirect_to @post, notice: "Your post was created."
-end
+  def create
+    @post = @forum.posts.new(post_params) 
+    @post.save
+    redirect_to @post, notice: "Your post was created."
+  end
 
-def new
-  @post = @forum.posts.new  
-end
+  def new
+    @post = @forum.posts.new  
+  end
 
-def edit    
-end
+  def edit    
+  end
 
-def show    
+  def show    
+  end 
 
-def update
-  @post = Post.new(post_params)
-  @post.save
-  redirect_to @post, notice: "Your post was updated."
-end
+  def update
+    @post = Post.new(post_params)
+    @post.save
+    redirect_to @post, notice: "Your post was updated."
+  end
 
-def destroy
-  @forum = @post.forum
-  @post.destroy
-  redirect_to @forum, notice: "Your post was deleted."
-end
+  def destroy
+    @forum = @post.forum
+    @post.destroy
+    redirect_to @forum, notice: "Your post was deleted."
+  end
 
-  private
+ private
 
   def check_logon 
     if !@current_user
@@ -54,8 +55,7 @@ end
   end
 
   def post_params  
-    params[:post][:user_id] = session[:current_user]["id"] 
+    params[:post][:user_id] = session[:current_user]
     params.require(:post).permit(:title,:content,:user_id)
   end
 end
-
