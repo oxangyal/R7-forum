@@ -1,3 +1,11 @@
+<% if subscription.id
+  url = subscription_path
+  else 
+  url = forum_subscriptions_path(subscription.forum)
+  end %>
+<%= form_with(model: subscription, url: url) do |form| %>
+  <h2><%= "Subscription for forum #{subscription.forum.forum_name}." %></h2>
+  
 <%= form_with(model: subscription) do |form| %>
   <% if subscription.errors.any? %>
     <div style="color: red">
