@@ -1,12 +1,11 @@
 <% if subscription.id
   url = subscription_path
-  else 
+else
   url = forum_subscriptions_path(subscription.forum)
-  end %>
-<%= form_with(model: subscription, url: url) do |form| %>
-  <h2><%= "Subscription for forum #{subscription.forum.forum_name}." %></h2>
-  
+end %>
+
 <%= form_with(model: subscription) do |form| %>
+    <h2><%= "Subscription for forum #{subscription.forum.forum_name}." %></h2>
   <% if subscription.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(subscription.errors.count, "error") %> prohibited this subscription from being saved:</h2>

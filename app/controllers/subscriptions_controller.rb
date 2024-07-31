@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
 
   # GET /subscriptions or /subscriptions.json
   def index
-    @forums = Forum.joins(:subscriptions).where(subscriptions: {user_id: @user.id}).order(:priority)
+    @forums = Forum.joins(:subscriptions).where(subscriptions: {user_id: @current_user.id}).order(:priority)
    end
 
   # GET /subscriptions/1 or /subscriptions/1.json
@@ -15,7 +15,7 @@ class SubscriptionsController < ApplicationController
 
   # GET /subscriptions/new
   def new
-    @subscription = @user.subscriptions.new 
+    @subscription = @current_user.subscriptions.new 
     @subscription.forum_id = @forum.id      
   end
 
