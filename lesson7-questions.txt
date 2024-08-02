@@ -87,7 +87,7 @@ Active Record Statement could you use to retrieve all the user's posts for that
 forum?  Hint: You need to have a where in your statement. Try this out in the console.
 You will see the SQL that is executed logged to the screen.  What is that SQL?
 
-SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = User AND "posts"."forum_id" = Forum
+SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ? AND "posts"."forum_id" = ?
 
 
 8. You have the following method in your posts controller:
