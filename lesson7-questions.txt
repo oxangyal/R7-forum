@@ -109,8 +109,15 @@ change the routes?  What is the additional hash key and value that is passed in 
 params hash to the subscriptions controller as a result of this nesting? Which routes
 are unaffected by the nesting?
 
-it adds prefix, for instance, for subscriptions#new it will be GET /forums/:forum_id/subscriptions/new add hash key
-forum_id. it  means that each subscription is associated with specific forum. Routes that are not nested will remain unaffected.
+Nesting the routes for subscriptions under the forum routes adds a hash key and value to the params hash. 
+For example, the route for subscriptions#new becomes GET /forums/:forum_id/subscriptions/new, where :forum_id is a placeholder
+ for a specific forum's ID. 
+This means that each subscription is associated with a specific forum.
+
+As a result of this nesting, the params hash in the subscriptions controller includes an additional key-value pair.
+ The key is :forum_id, and the value is the ID of the forum under which the subscription is being accessed or manipulated. 
+ This key-value pair can be accessed in the controller using params[:forum_id]. Routes that are not nested, 
+ such as top-level routes for other resources like users or posts, remain unaffected by this nesting.
 
 
 10. Every action method must do exactly one of two things -- that is, each
