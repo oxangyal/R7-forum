@@ -4,7 +4,7 @@ Questions for Lesson 7
 before some or all of the controller actions execute?  Where can you put that
 change so that it affects all controllers?
 
-
+before_action callback method, you can put it Application Controller so it will affets all controllers.
 
 2. Consider the following statement:
 
@@ -15,12 +15,22 @@ After you do this statement but before starting the rails server, you have to do
 command.  What is that command?
 
 
+This statement  creates a  migration file (which contains instructions to create the subscriptions table in data base), 
+and Subscription model. You need to run bin/rails db:migrate to apply the migration and create 
+subscription table in the database.
+
 
 3. What table is created as a result of the migration described above? What are the column
 names in that table? What is the primary key? What are the foreign keys?  What does a 
 foreign key do?
 
 
+Subscription table is created with columns: id (primary key), forum_id (foreign key), user_id(foreign key), priority, 
+timestamps (created_at and updated_at)
+
+Primary key is the id which is automatically created by rails during table creation.
+Foreign key is a reference key. For instance we have forum_id its foreign key referencing the forum tables, 
+user_id  references users table.
 
 4. You have the following lines in the Subscription model:
 
@@ -32,7 +42,8 @@ that if you have a @subscription (an instance of Subscription), you have a coupl
 used to refer to associated database methods.  What are those methods?  (Actually there are a few,
 but there are two in particular you should know.)
 
-
+These methods set user model and forum model in relation with the subscription. We can call user object by @subscription.user 
+or  call forum object @subscription.forum 
 
 5. You have the following lines in the User model.
 
@@ -43,6 +54,8 @@ has_many :forums, through: :subscriptions
 What are threee important methods that are available to instances of the user model because
 of these lines?
 
+These methods call user related data:
+@user.subcriptions, @user.posts, @user.forums
 
 
 6. Suppose that user is an instance of the User class. What kind of object is returned by
@@ -67,13 +80,14 @@ Try that last line.  You will see that it creates a subscription object, but tha
 object is not entirely empty.  Which attribute is set? Where does it get that
 value?
 
-
+user_id has a value, because the association was set in subscription model by belongs_to: user method.
 
 7. Suppose that user is an instance of User, and forum is an instance of Forum.  What
 Active Record Statement could you use to retrieve all the user's posts for that
 forum?  Hint: You need to have a where in your statement. Try this out in the console.
 You will see the SQL that is executed logged to the screen.  What is that SQL?
 
+SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = User AND "posts"."forum_id" = Forum
 
 
 8. You have the following method in your posts controller:
@@ -87,19 +101,21 @@ You will see the SQL that is executed logged to the screen.  What is that SQL?
 There is a security exposure, a risk that a hacker could do damage.  What is that
 risk? What two things are done in your code to prevent the risk?
 
-
+Everyone (the hacker) can delete the post, so we need to authorize and authenticate the user to do it with 
+before_action :check_access, only: %w[edit update delete] 
 
 9. The routes for subscriptions are nested under the forum routes.  How does this
 change the routes?  What is the additional hash key and value that is passed in the
 params hash to the subscriptions controller as a result of this nesting? Which routes
 are unaffected by the nesting?
 
-
+it adds prefix, for instance, for subscriptions#new it will be GET /forums/:forum_id/subscriptions/new add hash key
+forum_id. it  means that each subscription is associated with specific forum. Routes that are not nested will remain unaffected.
 
 
 10. Every action method must do exactly one of two things -- that is, each
 method may do all sorts of logic, but at the end, it has to do one of two
 things, depending on the outcome of the logic.  What are those two things?
 
-
+Render the view or redirect.
 
