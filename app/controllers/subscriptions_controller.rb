@@ -7,7 +7,7 @@ class SubscriptionsController < ApplicationController
   # GET /subscriptions or /subscriptions.json
   def index
     @forums = Forum.joins(:subscriptions).where(subscriptions: {user_id: @current_user.id}).order(:priority)
-   end
+  end
 
   # GET /subscriptions/1 or /subscriptions/1.json
   def show
@@ -25,7 +25,8 @@ class SubscriptionsController < ApplicationController
 
   # POST /subscriptions or /subscriptions.json
   def create
-    @subscription = @user.subscriptions.new(subscription_params)
+    @subscription = @current_user.subscriptions.new(subscription_params)
+    @subscription.forum = @forum
 
     respond_to do |format|
       if @subscription.save
