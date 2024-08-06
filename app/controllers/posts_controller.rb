@@ -6,8 +6,11 @@ class PostsController < ApplicationController
 
   def create
     @post = @forum.posts.new(post_params) 
-    @post.save
-    redirect_to @post, notice: "Your post was created."
+    if @post.save
+      redirect_to @post, notice: "Your post was created."
+    else 
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def new
@@ -21,9 +24,11 @@ class PostsController < ApplicationController
   end 
 
   def update
-    @post = Post.new(post_params)
-    @post.save
-    redirect_to @post, notice: "Your post was updated."
+    if @post.update(post_params)
+      redirect_to @post, notice: "Your post was updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -47,11 +52,12 @@ class PostsController < ApplicationController
   def set_post
     @post = Post.find(params[:id])
   end
+  
 
   def check_access
-    if @post.user_id != session[:current_user][:id]
-      redirect_to forums_path, notice: "That's not your post, so you can't change it."
-    end
+    return unless @post.user_id != session[:current_user]
+
+    redirect_to forums_path, notice: "That's not your post, so you can't change it."
   end
 
   def post_params  
